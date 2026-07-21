@@ -16,6 +16,7 @@ const load = () => {
   return defaultData();
 };
 
+
 export default function HomePage() {
   const [data, setData] = useState(load);
   const [active, setActive] = useState('cover');
@@ -92,6 +93,16 @@ export default function HomePage() {
 
   const previewPage = active === 'days' ? 'day' : active;
   const pageList = buildPageList(data);
+
+
+
+  // Social media data configuration
+  const socialLinks = [
+    { id: 'twitter', icon: <FaTwitter />, url: 'https://twitter.com', color: 'hover:text-sky-500' },
+    { id: 'linkedin', icon: <FaLinkedin />, url: 'https://linkedin.com', color: 'hover:text-blue-700' },
+    { id: 'github', icon: <FaGithub />, url: 'https://github.com', color: 'hover:text-slate-900' },
+    { id: 'facebook', icon: <FaFacebook />, url: 'https://facebook.com', color: 'hover:text-blue-600' }
+  ];
 
   return (
     <div className="flex h-screen flex-col bg-slate-100">
@@ -314,6 +325,42 @@ function Editor({ active, data, set, activeDay, setActiveDay, addDay, removeDay 
         <ImageUpload label="QR Code Image" value={p.qr} onChange={(v) => set((d) => { d.payment.qr = v; })} />
         <Field label="Google Review Rating (out of 5)"><TextInput type="number" step="0.1" max="5" value={p.rating} onChange={f('rating')} /></Field>
         <Field label="Testimonial Quote"><TextArea rows={3} value={p.testimonial} onChange={f('testimonial')} /></Field>
+      </div>
+    );
+  }
+
+  if (active === 'Follow Us') {
+    return (
+      <div className="space-y-6">
+        <div>
+          <SectionTitle>Follow Us</SectionTitle>
+          <p className="text-sm text-slate-600 mb-4">
+            This section is for any additional follow-up information or notes you may want to include.
+          </p>
+          <TextArea
+            rows={4}
+            value={data.followUp}
+            onChange={(e) => set((d) => { d.followUp = e.target.value; })}
+          />
+        </div>
+
+        {/* Social Media Section */}
+        <div className="pt-4 border-t border-slate-200">
+          <h4 className="text-sm font-semibold text-slate-700 mb-3">Follow Us</h4>
+          <div className="flex gap-4">
+            {socialLinks.map((link) => (
+              <a
+                key={link.id}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`text-2xl text-slate-400 transition-colors duration-200 ${link.color}`}
+              >
+                {link.icon}
+              </a>
+            ))}
+          </div>
+        </div>
       </div>
     );
   }
