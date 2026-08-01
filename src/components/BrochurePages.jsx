@@ -64,7 +64,7 @@ function CoverPage({ d }) {
     <div className="brochure-page">
       <div style={{ position: 'absolute', top: 40, left: 56 }}>
         {/* {c.logo ? <Img src={c.logo} style={{ width: 130, height: 130 }} /> : <Logo size={110} showText />} */}
-        {<img src={c.logo ? c.logo : '/adn-logo.png'} alt="Logo" style={{ width: 130, height: 130 }} />}
+        {<img src={c.logo ? c.logo : '/adn-logo.png'} alt="Logo" style={{ width: 240, height: 130 }} />}
       </div>
       <div style={{ textAlign: 'center', paddingTop: 150 }}>
         <div style={{ letterSpacing: 8, fontSize: 20, color: MAROON, fontWeight: 700, textTransform: 'uppercase' }}>Tour Package Details</div>
@@ -89,10 +89,10 @@ function WhyPage({ d }) {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '34px 60px', padding: '0 70px' }}>
         {d.why.map((item, i) => (
           <div key={item.id} style={{ display: 'flex', gap: 20, alignItems: 'flex-start' }}>
-            <div style={{ minWidth: 58, width: 58, height: 58, borderRadius: '50%', background: GOLD, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 800, fontFamily: 'Georgia, serif' }}>{i + 1}</div>
+            <div style={{ minWidth: 58, width: 68, height: 68, borderRadius: '50%', background: GOLD, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36, fontWeight: 800, fontFamily: 'Georgia, serif' }}>{i + 1}</div>
             <div>
-              <div className="brochure-serif" style={{ fontSize: 26, fontWeight: 800, color: MAROON }}>{item.title}</div>
-              <div className="brochure-body" style={{ fontSize: 20, color: '#4a4a4a', lineHeight: 1.35 }}>{item.desc}</div>
+              <div className="brochure-serif" style={{ fontSize: 34, fontWeight: 800, color: MAROON }}>{item.title}</div>
+              <div className="brochure-body" style={{ fontSize: 24, color: '#4a4a4a', lineHeight: 1.35 }}>{item.desc}</div>
             </div>
           </div>
         ))}
@@ -109,10 +109,10 @@ function DayPage({ day }) {
       <GoldBar title="Day-wise Itinerary" />
       <div style={{ display: 'flex', gap: 50, padding: '0 70px' }}>
         <div style={{ flex: 1 }}>
-          <div style={{ display: 'inline-block', background: GOLD, color: '#fff', padding: '8px 24px', borderRadius: 6, fontSize: 24, fontWeight: 800, fontFamily: 'Georgia, serif', marginBottom: 26 }}>DAY {day.dayNumber}</div>
+          <div style={{ display: 'inline-block', background: GOLD, color: '#fff', padding: '8px 24px', borderRadius: 6, fontSize: 28, fontWeight: 800, fontFamily: 'Georgia, serif', marginBottom: 26 }}>DAY {day.dayNumber}</div>
           <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
             {day.activities.map((a) => (
-              <Bullet key={a.id}><span style={{ fontWeight: 700, color: '#222' }}>{a.text}</span></Bullet>
+              <Bullet key={a.id}><span style={{ fontWeight: 700,fontSize: 24, color: '#222' }}>{a.text}</span></Bullet>
             ))}
           </ul>
         </div>
@@ -158,25 +158,25 @@ function PricePage({ d }) {
           <thead>
             <tr style={{ background: GOLD, color: '#fff' }}>
               {['No. of Persons', 'Rate Per Head', 'Rooms Count', 'Vehicle'].map((h) => (
-                <th key={h} style={{ padding: '14px 20px', textAlign: 'left', fontWeight: 800 }}>{h}</th>
+                <th key={h} style={{ padding: '14px 20px', textAlign: 'left', fontWeight: 800, fontSize: 26 }}>{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {d.priceRows.map((r, i) => (
               <tr key={r.id} style={{ background: i % 2 ? '#fff' : CREAM }}>
-                <td style={{ padding: '13px 20px' }}>{r.persons}</td>
-                <td style={{ padding: '13px 20px' }}>₹ {Number(r.rate || 0).toLocaleString('en-IN')}</td>
-                <td style={{ padding: '13px 20px' }}>{r.rooms}</td>
-                <td style={{ padding: '13px 20px' }}>{r.vehicle}</td>
+                <td style={{ padding: '13px 20px', fontSize: 24 }}>{r.persons}</td>
+                <td style={{ padding: '13px 20px', fontSize: 24 }}>₹ {Number(r.rate || 0).toLocaleString('en-IN')}</td>
+                <td style={{ padding: '13px 20px', fontSize: 24 }}>{r.rooms}</td>
+                <td style={{ padding: '13px 20px', fontSize: 24 }}>{r.vehicle}</td>
               </tr>
             ))}
           </tbody>
         </table>
-        <div style={{ background: NAVY, borderRadius: 12, padding: '24px 34px', marginTop: 34 }}>
+        <div style={{ background: NAVY, borderRadius: 12, padding: '24px 34px', marginTop: 50 }}>
           <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
             {d.priceNotes.map((n) => (
-              <li key={n.id} style={{ color: '#fff', fontFamily: 'Georgia, serif', fontSize: 20, marginBottom: 10, display: 'flex', gap: 12 }}>
+              <li key={n.id} style={{ color: '#fff', fontFamily: 'Georgia, serif', fontSize: 18, marginBottom: 10, display: 'flex', gap: 12 }}>
                 <span style={{ color: GOLD }}>●</span>{n.text}
               </li>
             ))}
@@ -212,12 +212,12 @@ function TermsPage({ d }) {
       <GoldBar title="Terms & Policies" />
       <div style={{ display: 'flex', gap: 50, padding: '0 70px', alignItems: 'flex-start' }}>
         <div style={{ flex: 1.3 }}>
-          <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+          <ul style={{ listStyle: 'none', padding: 0,fontSize: 20, margin: 0 }}>
             {d.terms.map((t) => <Bullet key={t.id}>{t.text}</Bullet>)}
           </ul>
         </div>
         <div style={{ flex: 1 }}>
-          <div className="brochure-serif" style={{ fontSize: 28, fontWeight: 800, color: MAROON, marginBottom: 18 }}>Payment Charges</div>
+          <div className="brochure-serif" style={{ fontSize: 30, fontWeight: 800, color: MAROON, marginBottom: 18 }}>Payment Charges</div>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: 'Georgia, serif', fontSize: 21 }}>
             <thead>
               <tr style={{ background: GOLD, color: '#fff' }}>
@@ -270,14 +270,14 @@ function PaymentPage({ d }) {
       <div style={{ display: 'flex', gap: 50, padding: '0 70px', alignItems: 'flex-start' }}>
         <div style={{ flex: 1 }}>
           {rows.map(([k, v]) => (
-            <div key={k} style={{ display: 'flex', marginBottom: 16, fontFamily: 'Georgia, serif', fontSize: 22 }}>
+            <div key={k} style={{ display: 'flex', marginBottom: 16, fontFamily: 'Georgia, serif', fontSize: 24 }}>
               <span style={{ width: 180, fontWeight: 800, color: MAROON }}>{k}</span>
               <span>{v}</span>
             </div>
           ))}
         </div>
         <div style={{ width: 360, background: CREAM, borderRadius: 16, padding: 26, textAlign: 'center' }}>
-          <Img src={p.qr} style={{ width: 200, height: 200, margin: '0 auto', borderRadius: 8, background: '#fff' }} />
+          <Img src={p.qr ? p.qr : '/adn-qr.jpeg'} style={{ width: 240, height: 220, margin: '0 auto', borderRadius: 8, background: '#fff' }} />
           <div style={{ fontSize: 18, color: '#555', margin: '12px 0', fontFamily: 'Georgia, serif' }}>Scan to pay with any UPI app</div>
           <div style={{ fontWeight: 800, color: MAROON, fontFamily: 'Georgia, serif', fontSize: 20 }}>{p.bankName} ••{String(p.accountNo).slice(-4)}</div>
           <div style={{ fontSize: 18, color: '#333', fontFamily: 'Georgia, serif' }}>{p.upi}</div>
