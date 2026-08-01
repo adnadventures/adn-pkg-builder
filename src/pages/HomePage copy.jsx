@@ -8,24 +8,10 @@ import { Field, TextInput, TextArea, ImageUpload, ListEditor } from '@/component
 
 const STORAGE_KEY = 'adn_brochure_v1';
 
-const migrateSavedData = (saved) => {
-  const fresh = defaultData();
-  if (!saved || typeof saved !== 'object') return fresh;
-
-  const next = structuredClone(saved);
-  const hasGalleryImages = Array.isArray(next.gallery) && next.gallery.some((g) => g?.img);
-
-  if (!hasGalleryImages) {
-    next.gallery = fresh.gallery;
-  }
-
-  return next;
-};
-
 const load = () => {
   try {
-    const raw = sessionStorage.getItem(STORAGE_KEY);
-    if (raw) return migrateSavedData(JSON.parse(raw));
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
   } catch (e) { /* ignore */ }
   return defaultData();
 };

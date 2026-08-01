@@ -1,0 +1,44 @@
+src
+├── App.css
+├── App.jsx
+├── assets
+│   ├── hero.png
+│   ├── react.svg
+│   └── vite.svg
+├── components
+│   ├── BrochurePages.jsx
+│   ├── Editors.jsx
+│   ├── ScrollToTop.jsx
+│   └── ui
+│       ├── accordion.jsx
+│       ├── alert-dialog.jsx
+│       ├── alert.jsx
+│       ├── aspect-ratio.jsx
+│       ├── avatar.jsx
+│       ├── badge.jsx
+│       ├── breadcrumb.jsx
+│       ├── button-group.jsx
+│       ├── button.jsx
+│       ├── calendar.jsx
+│       ├── card.jsx
+│       ├── carousel.jsx
+│       ├── chart.jsx
+│       ├── checkbox.jsx
+│       ├── collapsible.jsx
+│       ├── command.jsx
+│       ├── context-menu.jsx
+│       ├── dialog.jsx
+│       ├── drawer.jsx
+│       └── dropdown-menu.jsx
+├── hooks
+│   ├── use-mobile.jsx
+│   └── use-toast.js
+├── index.css
+├── lib
+│   ├── brochureDefaults.js
+│   └── utils.js
+├── main.jsx
+└── pages
+    └── HomePage.jsx
+
+7 directories, 35 files

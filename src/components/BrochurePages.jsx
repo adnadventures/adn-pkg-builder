@@ -19,10 +19,11 @@ const Logo = ({ size = 64, color = GOLD, showText = false }) => (
 
 const Watermark = () => (
   <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', opacity: 0.08, pointerEvents: 'none' }}>
-    <svg width={340} height={340} viewBox="0 0 100 100" fill="none">
+    {/* <svg width={340} height={340} viewBox="0 0 100 100" fill="none">
       <path d="M8 78 L34 34 L50 60 L64 40 L92 78 Z" fill={GOLD} />
       <path d="M50 22 L86 30 L58 40 L52 58 L46 40 L50 22 Z" fill={GOLD} />
-    </svg>
+    </svg> */}
+    <img src="/adn-logo.png" alt="watermark" style={{ width: 500, height: 340 }} />
     <div className="brochure-serif" style={{ fontSize: 34, fontWeight: 800, color: GOLD, marginTop: 10 }}>ADN ADVENTURES</div>
     <div style={{ fontSize: 20, letterSpacing: 6, color: GOLD, fontWeight: 600 }}>EXPLORE • DISCOVER • EXPERIENCE</div>
   </div>
@@ -62,7 +63,8 @@ function CoverPage({ d }) {
   return (
     <div className="brochure-page">
       <div style={{ position: 'absolute', top: 40, left: 56 }}>
-        {c.logo ? <Img src={c.logo} style={{ width: 130, height: 130 }} /> : <Logo size={110} showText />}
+        {/* {c.logo ? <Img src={c.logo} style={{ width: 130, height: 130 }} /> : <Logo size={110} showText />} */}
+        {<img src={c.logo ? c.logo : '/adn-logo.png'} alt="Logo" style={{ width: 130, height: 130 }} />}
       </div>
       <div style={{ textAlign: 'center', paddingTop: 150 }}>
         <div style={{ letterSpacing: 8, fontSize: 20, color: MAROON, fontWeight: 700, textTransform: 'uppercase' }}>Tour Package Details</div>

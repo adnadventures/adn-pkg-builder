@@ -1,3 +1,14 @@
+const galleryModules = import.meta.glob('../assets/default-gallery/*.{png,jpg,jpeg,svg,webp}', { eager: true });
+
+const buildDefaultGallery = () =>
+  Object.entries(galleryModules)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([path, module]) => ({
+      id: uid(),
+      img: module.default,
+      name: path.split('/').pop(),
+    }));
+
 export const GOLD = '#D4A94A';
 export const MAROON = '#7A2E3A';
 export const NAVY = '#2C3E50';
@@ -82,7 +93,7 @@ export const defaultData = () => ({
     { text: 'Package can be customized to fit your needs.' },
     { text: "Everything under 'Inclusions' is provided; items under 'Exclusions' are payable separately." },
   ]),
-  gallery: Array.from({ length: 10 }).map(() => ({ id: uid(), img: null })),
+  gallery: buildDefaultGallery(),
   advancePct: 40,
   terms: withIds([
     { text: 'Itinerary is subject to change due to weather conditions or unforeseen delays.' },
