@@ -64,7 +64,7 @@ export default function HomePage() {
   const addDay = () => {
     set((d) => {
       const n = d.days.length + 1;
-      d.days.push({ id: uid(), dayNumber: n, activities: [{ id: uid(), text: '' }], imgTop: null, imgBottom: null });
+      d.days.push({ id: uid(), dayNumber: n, title: `Day ${n}`, activities: [{ id: uid(), text: '' }], imgTop: null, imgBottom: null });
     });
     setActive('days');
     setActiveDay(data.days.length);
@@ -87,13 +87,16 @@ export default function HomePage() {
     setGenerating(true);
     await new Promise((r) => setTimeout(r, 60));
     try {
+      await document.fonts.ready;
       const pages = Array.from(exportRef.current.querySelectorAll('.brochure-page'));
-      const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: [1456, 816] });
+      const pdf = new jsPDF({ orientation: "landscape", unit: "px", hotfixes: ["px_scaling"], format: [1456, 816] });
       for (let i = 0; i < pages.length; i++) {
-        const canvas = await html2canvas(pages[i], { scale: 2, useCORS: true, backgroundColor: '#ffffff', width: 1456, height: 816 });
+        const canvas = await html2canvas(pages[i], { scale: 2, useCORS: true, backgroundColor: "#ffffff", width: 1456, height: 816, windowWidth: 1456, windowHeight: 816, scrollX: 0, scrollY: 0 });
         const img = canvas.toDataURL('image/jpeg', 0.92);
-        if (i > 0) pdf.addPage([1456, 816], 'landscape');
-        pdf.addImage(img, 'JPEG', 0, 0, 1456, 816);
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        if (i > 0) pdf.addPage([1456, 816], "landscape");
+        pdf.addImage(img, "JPEG", 0, 0, pageWidth, pageHeight);
       }
       const name = (data.cover.destination || 'package').toString().toLowerCase().replace(/\s+/g, '-');
       pdf.save(`adn-${name}-tour-package.pdf`);
@@ -171,7 +174,7 @@ export default function HomePage() {
       </div>
 
       {/* Hidden full-size export container */}
-      <div style={{ position: 'fixed', left: -99999, top: 0, pointerEvents: 'none' }}>
+      <div style={{ position: "absolute", left: 0, top: 0, width: 1456, pointerEvents: "none", zIndex: -1 }}>
         <div ref={exportRef}>
           {pageList.map((p, i) => (
             <BrochurePage key={i} page={p.page} data={data} dayIndex={p.dayIndex || 0} />
@@ -225,7 +228,7 @@ function Editor({ active, data, set, activeDay, setActiveDay, addDay, removeDay 
         <div className="mb-4 flex flex-wrap gap-1.5">
           {data.days.map((dd, i) => (
             <button key={dd.id} onClick={() => setActiveDay(i)} className={`rounded-md px-3 py-1.5 text-xs font-medium ${activeDay === i ? 'text-white' : 'bg-slate-100 text-slate-600'}`} style={activeDay === i ? { background: GOLD } : {}}>
-              Day {dd.dayNumber}
+              {dd.title || `Day ${dd.dayNumber}`}
             </button>
           ))}
           <button onClick={addDay} className="flex items-center gap-1 rounded-md border border-dashed border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-600 hover:border-[#D4A94A]"><Plus size={12} /> Add Day</button>
@@ -233,11 +236,17 @@ function Editor({ active, data, set, activeDay, setActiveDay, addDay, removeDay 
         {day && (
           <>
             <div className="mb-3 flex items-center gap-2">
-              <Field label="Day Number"><TextInput type="number" value={day.dayNumber} onChange={(e) => set((d) => { d.days[activeDay].dayNumber = e.target.value; })} /></Field>
               {data.days.length > 1 && (
                 <button onClick={() => removeDay(activeDay)} className="mt-4 flex items-center gap-1 rounded-md border border-red-200 px-2 py-2 text-xs text-red-500 hover:bg-red-50"><Trash2 size={14} /> Remove</button>
               )}
             </div>
+            <Field label="Day Title / Heading">
+              <TextInput
+                value={day.title || `Day ${day.dayNumber}`}
+                placeholder="e.g. Day 1 - Sightseeing"
+                onChange={(e) => set((d) => { d.days[activeDay].title = e.target.value; })}
+              />
+            </Field>
             <ListEditor label="Activities / Places" items={day.activities} onChange={(v) => set((d) => { d.days[activeDay].activities = v; })} fields={[{ key: 'text', placeholder: 'e.g. Suicide Point' }]} />
             <ImageUpload label="Day Image 1 (Top Right)" value={day.imgTop} onChange={(v) => set((d) => { d.days[activeDay].imgTop = v; })} />
             <ImageUpload label="Day Image 2 (Bottom Right)" value={day.imgBottom} onChange={(v) => set((d) => { d.days[activeDay].imgBottom = v; })} />
@@ -268,7 +277,6 @@ function Editor({ active, data, set, activeDay, setActiveDay, addDay, removeDay 
           fields={[{ key: 'persons', placeholder: 'Persons' }, { key: 'rate', placeholder: 'Rate ₹' }, { key: 'rooms', placeholder: 'Rooms' }, { key: 'vehicle', placeholder: 'Vehicle' }]}
           newItem={{ persons: '', rate: '', rooms: '', vehicle: '' }}
         />
-        <ListEditor label="Note Lines" items={data.priceNotes} onChange={(v) => set((d) => { d.priceNotes = v; })} />
       </div>
     );
   }
@@ -299,6 +307,7 @@ function Editor({ active, data, set, activeDay, setActiveDay, addDay, removeDay 
           fields={[{ key: 'window', placeholder: 'Payment window' }, { key: 'charge', placeholder: 'Charge %' }]}
           newItem={{ window: '', charge: '' }}
         />
+        <ListEditor label="Price Notes" items={data.priceNotes} onChange={(v) => set((d) => { d.priceNotes = v; })} />
       </div>
     );
   }

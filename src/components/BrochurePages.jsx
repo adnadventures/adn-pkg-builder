@@ -24,8 +24,6 @@ const Watermark = () => (
       <path d="M50 22 L86 30 L58 40 L52 58 L46 40 L50 22 Z" fill={GOLD} />
     </svg> */}
     <img src="/adn-logo.png" alt="watermark" style={{ width: 500, height: 340 }} />
-    <div className="brochure-serif" style={{ fontSize: 34, fontWeight: 800, color: GOLD, marginTop: 10 }}>ADN ADVENTURES</div>
-    <div style={{ fontSize: 20, letterSpacing: 6, color: GOLD, fontWeight: 600 }}>EXPLORE • DISCOVER • EXPERIENCE</div>
   </div>
 );
 
@@ -109,7 +107,7 @@ function DayPage({ day }) {
       <GoldBar title="Day-wise Itinerary" />
       <div style={{ display: 'flex', gap: 50, padding: '0 70px' }}>
         <div style={{ flex: 1 }}>
-          <div style={{ display: 'inline-block', background: GOLD, color: '#fff', padding: '8px 24px', borderRadius: 6, fontSize: 28, fontWeight: 800, fontFamily: 'Georgia, serif', marginBottom: 26 }}>DAY {day.dayNumber}</div>
+          <div style={{ display: 'inline-block', background: GOLD, color: '#fff', padding: '8px 24px', borderRadius: 6, fontSize: 28, fontWeight: 800, fontFamily: 'Georgia, serif', marginBottom: 26 }}>{day.title || `DAY ${day.dayNumber}`}</div>
           <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
             {day.activities.map((a) => (
               <Bullet key={a.id}><span style={{ fontWeight: 700,fontSize: 24, color: '#222' }}>{a.text}</span></Bullet>
@@ -173,15 +171,6 @@ function PricePage({ d }) {
             ))}
           </tbody>
         </table>
-        <div style={{ background: NAVY, borderRadius: 12, padding: '24px 34px', marginTop: 50 }}>
-          <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-            {d.priceNotes.map((n) => (
-              <li key={n.id} style={{ color: '#fff', fontFamily: 'Georgia, serif', fontSize: 18, marginBottom: 10, display: 'flex', gap: 12 }}>
-                <span style={{ color: GOLD }}>●</span>{n.text}
-              </li>
-            ))}
-          </ul>
-        </div>
       </div>
       <Footer />
     </div>
@@ -235,6 +224,15 @@ function TermsPage({ d }) {
             </tbody>
           </table>
         </div>
+      </div>
+      <div style={{ background: NAVY, borderRadius: 12, padding: "24px 34px", margin: "50px 70px 0" }}>
+        <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+          {d.priceNotes.map((n) => (
+            <li key={n.id} style={{ color: "#fff", fontFamily: "Georgia, serif", fontSize: 18, marginBottom: 10, display: "flex", gap: 12 }}>
+              <span style={{ color: GOLD }}>●</span>{n.text}
+            </li>
+          ))}
+        </ul>
       </div>
       <Footer showLabel={false} />
     </div>

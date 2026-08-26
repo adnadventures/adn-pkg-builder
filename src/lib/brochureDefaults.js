@@ -42,6 +42,7 @@ export const defaultData = () => ({
     {
       id: uid(),
       dayNumber: 1,
+      title: 'Day 1 - Arrival & Sightseeing',
       activities: withIds([
         { text: 'Arrival & Check-in' },
         { text: 'Uluppuni Tunnel' },
@@ -54,6 +55,7 @@ export const defaultData = () => ({
     {
       id: uid(),
       dayNumber: 2,
+      title: 'Day 2 - Sightseeing',
       activities: withIds([
         { text: 'Sunrise Viewpoint' },
         { text: 'Kurisumala Trek' },
