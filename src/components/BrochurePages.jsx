@@ -86,8 +86,24 @@ function WhyPage({ d }) {
       <GoldBar title="Why Travel With Us?" />
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '34px 60px', padding: '0 70px' }}>
         {d.why.map((item, i) => (
-          <div key={item.id} style={{ display: 'flex', gap: 20, alignItems: 'flex-start' }}>
-            <div style={{ minWidth: 58, width: 68, height: 68, borderRadius: '50%', background: GOLD, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36, fontWeight: 800, fontFamily: 'Georgia, serif' }}>{i + 1}</div>
+          <div key={item.id} style={{ display: 'flex', gap: 20, alignItems: 'baseline', justifyContent: 'flex-start' }}>
+            <div 
+            style={{ 
+              minWidth: 58, 
+              width: 68, 
+              height: 58, 
+              borderRadius: '50%', 
+              background: GOLD, 
+              color: '#fff', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              fontSize: 36, 
+              fontWeight: 800, 
+              fontFamily: 'Georgia, serif' 
+              }}>
+                {i + 1}
+              </div>
             <div>
               <div className="brochure-serif" style={{ fontSize: 34, fontWeight: 800, color: MAROON }}>{item.title}</div>
               <div className="brochure-body" style={{ fontSize: 24, color: '#4a4a4a', lineHeight: 1.35 }}>{item.desc}</div>

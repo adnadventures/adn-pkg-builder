@@ -7,6 +7,8 @@ import { BrochurePage, buildPageList } from '@/components/BrochurePages';
 import { Field, TextInput, TextArea, ImageUpload, ListEditor } from '@/components/Editors';
 
 const STORAGE_KEY = 'adn_brochure_v1';
+const PAGE_WIDTH = 1122.52;
+const PAGE_HEIGHT = 793.70;
 
 const migrateSavedData = (saved) => {
   const fresh = defaultData();
@@ -48,7 +50,7 @@ export default function HomePage() {
     const fit = () => {
       if (!previewWrap.current) return;
       const w = previewWrap.current.clientWidth - 48;
-      setScale(Math.min(1, w / 1456));
+      setScale(Math.min(1, w / PAGE_WIDTH));
     };
     fit();
     window.addEventListener('resize', fit);
@@ -89,14 +91,31 @@ export default function HomePage() {
     try {
       await document.fonts.ready;
       const pages = Array.from(exportRef.current.querySelectorAll('.brochure-page'));
-      const pdf = new jsPDF({ orientation: "landscape", unit: "px", hotfixes: ["px_scaling"], format: [1456, 816] });
+      const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
       for (let i = 0; i < pages.length; i++) {
-        const canvas = await html2canvas(pages[i], { scale: 2, useCORS: true, backgroundColor: "#ffffff", width: 1456, height: 816, windowWidth: 1456, windowHeight: 816, scrollX: 0, scrollY: 0 });
+        const canvas = await html2canvas(pages[i], {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: "#ffffff",
+          width: PAGE_WIDTH,
+          height: PAGE_HEIGHT,
+          windowWidth: PAGE_WIDTH,
+          windowHeight: PAGE_HEIGHT,
+          scrollX: 0,
+          scrollY: 0,
+          onclone: (clonedDocument) => {
+            const exportRoot = clonedDocument.querySelector('[data-export-root]');
+            const clonedPage = exportRoot?.querySelectorAll('.brochure-page')[i];
+            if (clonedPage) {
+              clonedPage.style.width = `${PAGE_WIDTH}px`;
+              clonedPage.style.height = `${PAGE_HEIGHT}px`;
+              clonedPage.style.transform = 'none';
+            }
+          },
+        });
         const img = canvas.toDataURL('image/jpeg', 0.92);
-        const pageWidth = pdf.internal.pageSize.getWidth();
-        const pageHeight = pdf.internal.pageSize.getHeight();
-        if (i > 0) pdf.addPage([1456, 816], "landscape");
-        pdf.addImage(img, "JPEG", 0, 0, pageWidth, pageHeight);
+        if (i > 0) pdf.addPage('a4', 'landscape');
+        pdf.addImage(img, 'JPEG', 0, 0, 297, 210);
       }
       const name = (data.cover.destination || 'package').toString().toLowerCase().replace(/\s+/g, '-');
       pdf.save(`adn-${name}-tour-package.pdf`);
@@ -164,9 +183,9 @@ export default function HomePage() {
 
         {/* Preview */}
         <main ref={previewWrap} className="flex-1 overflow-auto bg-slate-200 p-6">
-          <div className="mx-auto" style={{ width: 1456 * scale }}>
-            <div className="mb-2 text-center text-xs font-medium text-slate-500">Live Preview · A4 Landscape · 1456 × 816</div>
-            <div className="brochure-scale-wrap shadow-2xl" style={{ transform: `scale(${scale})`, height: 816 * scale }}>
+          <div className="mx-auto" style={{ width: PAGE_WIDTH * scale }}>
+            <div className="mb-2 text-center text-xs font-medium text-slate-500">Live Preview · A4 Landscape · 297 × 210 mm</div>
+            <div className="brochure-scale-wrap shadow-2xl" style={{ transform: `scale(${scale})`, height: PAGE_HEIGHT * scale }}>
               <BrochurePage page={previewPage} data={data} dayIndex={activeDay} />
             </div>
           </div>
@@ -174,7 +193,7 @@ export default function HomePage() {
       </div>
 
       {/* Hidden full-size export container */}
-      <div style={{ position: "absolute", left: 0, top: 0, width: 1456, pointerEvents: "none", zIndex: -1 }}>
+      <div data-export-root style={{ position: 'fixed', left: '-2000px', top: 0, width: PAGE_WIDTH, height: PAGE_HEIGHT, pointerEvents: 'none', zIndex: -1 }}>
         <div ref={exportRef}>
           {pageList.map((p, i) => (
             <BrochurePage key={i} page={p.page} data={data} dayIndex={p.dayIndex || 0} />
