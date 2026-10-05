@@ -241,15 +241,6 @@ function TermsPage({ d }) {
           </table>
         </div>
       </div>
-      <div style={{ background: NAVY, borderRadius: 12, padding: "24px 34px", margin: "50px 70px 0" }}>
-        <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-          {d.priceNotes.map((n) => (
-            <li key={n.id} style={{ color: "#fff", fontFamily: "Georgia, serif", fontSize: 18, marginBottom: 10, display: "flex", gap: 12 }}>
-              <span style={{ color: GOLD }}>●</span>{n.text}
-            </li>
-          ))}
-        </ul>
-      </div>
       <Footer showLabel={false} />
     </div>
   );
@@ -263,6 +254,15 @@ function CancelPage({ d }) {
       <div style={{ padding: '0 70px' }}>
         <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
           {d.cancellation.map((t) => <Bullet key={t.id}>{t.text}</Bullet>)}
+        </ul>
+      </div>
+      <div style={{ background: NAVY, borderRadius: 12, padding: "24px 34px", margin: "30px 70px 0" }}>
+        <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+          {d.priceNotes.map((n) => (
+            <li key={n.id} style={{ color: "#fff", fontFamily: "Georgia, serif", fontSize: 18, marginBottom: 10, display: "flex", gap: 12 }}>
+              <span style={{ color: GOLD }}>●</span>{n.text}
+            </li>
+          ))}
         </ul>
       </div>
       <Footer />

@@ -326,7 +326,6 @@ function Editor({ active, data, set, activeDay, setActiveDay, addDay, removeDay 
           fields={[{ key: 'window', placeholder: 'Payment window' }, { key: 'charge', placeholder: 'Charge %' }]}
           newItem={{ window: '', charge: '' }}
         />
-        <ListEditor label="Price Notes" items={data.priceNotes} onChange={(v) => set((d) => { d.priceNotes = v; })} />
       </div>
     );
   }
@@ -336,6 +335,7 @@ function Editor({ active, data, set, activeDay, setActiveDay, addDay, removeDay 
       <div>
         <SectionTitle>Cancellation Policy</SectionTitle>
         <ListEditor label="Cancellation Rules" items={data.cancellation} onChange={(v) => set((d) => { d.cancellation = v; })} />
+        <ListEditor label="Price Notes" items={data.priceNotes} onChange={(v) => set((d) => { d.priceNotes = v; })} />
       </div>
     );
   }
