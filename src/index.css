@@ -30,10 +30,10 @@ body {
   font-family: Georgia, "Times New Roman", serif;
 }
 
-/* A4 landscape at 96 DPI: 297 x 210 mm = 1122.52 x 793.70 px */
+/* Landscape brochure page at 96 DPI: 297 x 250 mm = 1122.52 x 944.88 px */
 .brochure-page {
   width: 1122.52px;
-  height: 793.70px;
+  height: 944.88px;
   background: #ffffff;
   position: relative;
   overflow: hidden;
@@ -42,7 +42,7 @@ body {
 
 .brochure-scale-wrap {
   width: 1122.52px;
-  height: 793.70px;
+  height: 944.88px;
   transform-origin: top left;
 }
 

@@ -1,15 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import { Download, RotateCcw, Plus, Trash2, FileText, Loader2 } from 'lucide-react';
-import { defaultData, PAGES, uid, GOLD } from '@/lib/brochureDefaults';
+import { Download, RotateCcw, Plus, Trash2, FileText, Loader2, Save, Check } from 'lucide-react';
+import { defaultData, PAGES, uid, GOLD, PAGE_WIDTH, PAGE_HEIGHT } from '@/lib/brochureDefaults';
 import { BrochurePage, buildPageList } from '@/components/BrochurePages';
 import { Field, TextInput, TextArea, ImageUpload, ListEditor } from '@/components/Editors';
 
 const STORAGE_KEY = 'adn_brochure_v1';
-const PAGE_WIDTH = 1122.52;
-const PAGE_HEIGHT = 793.70;
-
 const migrateSavedData = (saved) => {
   const fresh = defaultData();
   if (!saved || typeof saved !== 'object') return fresh;
@@ -26,7 +23,7 @@ const migrateSavedData = (saved) => {
 
 const load = () => {
   try {
-    const raw = sessionStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(STORAGE_KEY) || sessionStorage.getItem(STORAGE_KEY);
     if (raw) return migrateSavedData(JSON.parse(raw));
   } catch (e) { /* ignore */ }
   return defaultData();
@@ -37,12 +34,14 @@ export default function HomePage() {
   const [active, setActive] = useState('cover');
   const [activeDay, setActiveDay] = useState(0);
   const [generating, setGenerating] = useState(false);
+  const [draftSaved, setDraftSaved] = useState(false);
   const [scale, setScale] = useState(0.5);
   const previewWrap = useRef(null);
   const exportRef = useRef(null);
 
   useEffect(() => {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (e) { /* ignore */ }
+    setDraftSaved(false);
   }, [data]);
 
   // responsive preview scaling
@@ -85,13 +84,22 @@ export default function HomePage() {
     setActiveDay(0);
   };
 
+  const saveDraft = () => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      setDraftSaved(true);
+    } catch (e) {
+      window.alert('Draft could not be saved. Browser storage may be full or unavailable.');
+    }
+  };
+
   const generatePDF = async () => {
     setGenerating(true);
     await new Promise((r) => setTimeout(r, 60));
     try {
       await document.fonts.ready;
       const pages = Array.from(exportRef.current.querySelectorAll('.brochure-page'));
-      const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+      const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: [297, 250] });
       for (let i = 0; i < pages.length; i++) {
         const canvas = await html2canvas(pages[i], {
           scale: 2,
@@ -114,8 +122,8 @@ export default function HomePage() {
           },
         });
         const img = canvas.toDataURL('image/jpeg', 0.92);
-        if (i > 0) pdf.addPage('a4', 'landscape');
-        pdf.addImage(img, 'JPEG', 0, 0, 297, 210);
+        if (i > 0) pdf.addPage([297, 250], 'landscape');
+        pdf.addImage(img, 'JPEG', 0, 0, 297, 250);
       }
       const name = (data.cover.destination || 'package').toString().toLowerCase().replace(/\s+/g, '-');
       pdf.save(`adn-${name}-tour-package.pdf`);
@@ -143,6 +151,10 @@ export default function HomePage() {
           </div>
         </div>
         <div className="flex items-center gap-2">
+          <button onClick={saveDraft} className="flex items-center gap-1.5 rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50">
+            {draftSaved ? <Check size={15} /> : <Save size={15} />}
+            {draftSaved ? 'Draft Saved' : 'Save as Draft'}
+          </button>
           <button onClick={reset} className="flex items-center gap-1.5 rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50">
             <RotateCcw size={15} /> Start New
           </button>
@@ -184,7 +196,7 @@ export default function HomePage() {
         {/* Preview */}
         <main ref={previewWrap} className="flex-1 overflow-auto bg-slate-200 p-6">
           <div className="mx-auto" style={{ width: PAGE_WIDTH * scale }}>
-            <div className="mb-2 text-center text-xs font-medium text-slate-500">Live Preview · A4 Landscape · 297 × 210 mm</div>
+            <div className="mb-2 text-center text-xs font-medium text-slate-500">Live Preview · Landscape · 297 × 250 mm</div>
             <div className="brochure-scale-wrap shadow-2xl" style={{ transform: `scale(${scale})`, height: PAGE_HEIGHT * scale }}>
               <BrochurePage page={previewPage} data={data} dayIndex={activeDay} />
             </div>

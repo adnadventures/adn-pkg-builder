@@ -163,26 +163,29 @@ function InclPage({ d }) {
 }
 
 function PricePage({ d }) {
+  const rowCount = d.priceRows.length;
+  const rowFontSize = Math.max(14, 24 - Math.max(0, rowCount - 6));
+  const rowPadding = Math.max(4, 13 - Math.max(0, rowCount - 6));
   return (
     <div className="brochure-page">
       <Watermark />
       <GoldBar title="Price Chart" />
       <div style={{ padding: '0 70px' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: 'Georgia, serif', fontSize: 22 }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: 'Georgia, serif', fontSize: rowFontSize }}>
           <thead>
             <tr style={{ background: GOLD, color: '#fff' }}>
               {['No. of Persons', 'Rate Per Head', 'Rooms Count', 'Vehicle'].map((h) => (
-                <th key={h} style={{ padding: '14px 20px', textAlign: 'left', fontWeight: 800, fontSize: 26 }}>{h}</th>
+                <th key={h} style={{ padding: `${rowPadding}px 20px`, textAlign: 'left', fontWeight: 800, fontSize: rowFontSize + 2 }}>{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {d.priceRows.map((r, i) => (
               <tr key={r.id} style={{ background: i % 2 ? '#fff' : CREAM }}>
-                <td style={{ padding: '13px 20px', fontSize: 24 }}>{r.persons}</td>
-                <td style={{ padding: '13px 20px', fontSize: 24 }}>₹ {Number(r.rate || 0).toLocaleString('en-IN')}</td>
-                <td style={{ padding: '13px 20px', fontSize: 24 }}>{r.rooms}</td>
-                <td style={{ padding: '13px 20px', fontSize: 24 }}>{r.vehicle}</td>
+                <td style={{ padding: `${rowPadding}px 20px`, fontSize: rowFontSize }}>{r.persons}</td>
+                <td style={{ padding: `${rowPadding}px 20px`, fontSize: rowFontSize }}>₹ {Number(r.rate || 0).toLocaleString('en-IN')}</td>
+                <td style={{ padding: `${rowPadding}px 20px`, fontSize: rowFontSize }}>{r.rooms}</td>
+                <td style={{ padding: `${rowPadding}px 20px`, fontSize: rowFontSize }}>{r.vehicle}</td>
               </tr>
             ))}
           </tbody>

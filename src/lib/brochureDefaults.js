@@ -13,6 +13,8 @@ export const GOLD = '#D4A94A';
 export const MAROON = '#7A2E3A';
 export const NAVY = '#2C3E50';
 export const CREAM = '#F3EDE3';
+export const PAGE_WIDTH = 1122.52;
+export const PAGE_HEIGHT = 944.88;
 
 let idc = 0;
 export const uid = () => `id_${Date.now()}_${idc++}`;
@@ -25,7 +27,7 @@ export const defaultData = () => ({
     destination: 'VAGAMON',
     nights: 2,
     days: 3,
-    tagline: 'Where Every Journey Becomes a Story…',
+    tagline: 'Your Journey Our Responsibilities…',
     img1: null,
     img2: null,
     img3: null,
@@ -94,6 +96,7 @@ export const defaultData = () => ({
     { text: 'Price may vary depending on group size and travel season.' },
     { text: 'Package can be customized to fit your needs.' },
     { text: "Everything under 'Inclusions' is provided; items under 'Exclusions' are payable separately." },
+    { text: "Price may vary depending on your location." },
   ]),
   gallery: buildDefaultGallery(),
   advancePct: 40,
